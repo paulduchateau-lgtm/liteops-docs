@@ -1,0 +1,53 @@
+---
+title: OP-002 LLM
+description: "Opérateur de traitement par modèle de langage. Génération de texte, résumé, extraction structurée."
+---
+
+`REF-SPEC/OP-002 v1.0 — 2026-04-02`
+
+## 1. Rôle
+
+**LLM** est l'opérateur de traitement par modèle de langage. Il reçoit un DataPacket enrichi d'un prompt et retourne une réponse structurée. Il ne prend aucune décision métier — il exécute le prompt.
+
+## 2. Pipeline
+
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  DataPacket   │────▶│  PROMPT      │────▶│  INFERENCE   │
+│  + prompt     │     │  BUILD       │     │  (API call)  │
+│  template     │     │              │     │              │
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                 │
+                                          ┌──────▼───────┐
+                                          │   PARSE      │
+                                          │   RESPONSE   │
+                                          │  (JSON/text) │
+                                          └──────┬───────┘
+                                                 │
+                                          ┌──────▼───────┐
+                                          │  DataPacket   │
+                                          │  OUTPUT       │
+                                          └──────────────┘
+```
+
+## 3. Étapes
+
+| Étape | Action | Output |
+|-------|--------|--------|
+| `PROMPT BUILD` | Injection du contexte dans le template | Prompt complet |
+| `INFERENCE` | Appel API au modèle (Claude, GPT) | Réponse brute |
+| `PARSE RESPONSE` | Extraction JSON ou texte structuré | DataPacket enrichi |
+
+## 4. Modèles supportés
+
+| Provider | Modèle | Usage |
+|----------|--------|-------|
+| Anthropic | Claude Sonnet 4 | Production — rapports, analyse |
+| Anthropic | Claude Haiku 4.5 | Volume — classification, extraction |
+| OpenAI | GPT-4o | Fallback |
+
+## 5. Consommateurs
+
+- **AG001 Pilot** — génération de rapports, interprétation SQL
+- **AG002 Sailor** — réponses RAG avec sources citées
+- **AG003 Matchmaker** — scoring et explication des matchs

@@ -1,0 +1,49 @@
+---
+title: AG001 Pilot
+description: "Agent d'analyse de données par chatbot. Requêtez votre base en langage naturel."
+---
+
+`REF-SPEC/AG001 v1.0 — 2026-04-02`
+
+## 1. Identité
+
+| Propriété | Valeur |
+|-----------|--------|
+| Code | `AG001` |
+| Nom | Pilot |
+| Couleur sémantique | Amber `#C4872E` |
+| Périmètre | Upload data → analyse → rapports |
+
+## 2. Pipeline opérateurs
+
+```
+OP-001          OP-006          OP-002          OP-007
+DATA LAYER  ──▶ TEXT TO SQL ──▶  LLM     ──▶  GRAPH GEN
+(ingestion)    (NL → SQL)     (analyse)     (visualisation)
+```
+
+## 3. Variantes
+
+| Code | Nom | Spécialisation |
+|------|-----|----------------|
+| `PA-01` | Risques & RH | Analyse des risques opérationnels et RH |
+| `PA-02` | Data Employés | Exploration données employés, absentéisme, turnover |
+
+## 4. Flux utilisateur
+
+1. **Upload** — L'utilisateur charge un fichier CSV/Excel ou connecte une base SQL
+2. **Ingestion** — `OP-001 Data Layer` normalise les données en DataPacket
+3. **Question** — L'utilisateur pose une question en langage naturel
+4. **Traduction** — `OP-006 Text to SQL` convertit la question en requête SQL
+5. **Exécution** — La requête est exécutée sur les données
+6. **Analyse** — `OP-002 LLM` interprète les résultats et génère un rapport
+7. **Visualisation** — `OP-007 Graph Gen` produit les graphiques correspondants
+
+## 5. Déploiement
+
+| Propriété | Valeur |
+|-----------|--------|
+| Durée estimée | &lt; 5 jours |
+| Infrastructure | Vercel (front) + Express (API) |
+| Base de données | Turso (SQLite distribué) |
+| Stack front | React + Vite |

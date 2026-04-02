@@ -1,0 +1,69 @@
+---
+title: OP-001 Data Layer
+description: "Opérateur d'ingestion et de normalisation des données. Point d'entrée de tout pipeline agent."
+---
+
+`REF-SPEC/OP-001 v1.0 — 2026-04-02`
+
+## 1. Rôle
+
+**Data Layer** est le point d'entrée de tout pipeline agent. Il reçoit des données brutes (CSV, Excel, JSON, base SQL), les normalise et produit un **DataPacket** exploitable par les opérateurs en aval.
+
+## 2. Pipeline
+
+```
+┌─────────────┐     ┌──────────────┐     ┌──────────────┐
+│   INPUT      │────▶│   PARSE      │────▶│   VALIDATE   │
+│  (fichier/   │     │  (détection  │     │  (typage,    │
+│   connexion) │     │   format)    │     │   nulls,     │
+│              │     │              │     │   doublons)  │
+└─────────────┘     └──────────────┘     └──────┬───────┘
+                                                │
+                                         ┌──────▼───────┐
+                                         │   NORMALIZE   │
+                                         │  (schéma      │
+                                         │   unifié)     │
+                                         └──────┬───────┘
+                                                │
+                                         ┌──────▼───────┐
+                                         │  DataPacket   │
+                                         │  OUTPUT       │
+                                         └──────────────┘
+```
+
+## 3. Étapes
+
+| Étape | Action | Output |
+|-------|--------|--------|
+| `INTAKE` | Réception du fichier ou connexion DB | Raw buffer |
+| `PARSE` | Détection format, extraction colonnes/lignes | Tableau structuré |
+| `VALIDATE` | Vérification types, nulls, doublons, outliers | Rapport qualité |
+| `NORMALIZE` | Application du schéma cible, renommage colonnes | DataPacket conforme |
+
+## 4. Quality Flags
+
+Le score qualité est calculé sur :
+- **Complétude** — % de cellules non-nulles
+- **Conformité** — % de valeurs au bon type
+- **Unicité** — absence de doublons sur les clés
+
+| Critère | Poids |
+|---------|-------|
+| Complétude | 40% |
+| Conformité | 35% |
+| Unicité | 25% |
+
+## 5. Formats supportés
+
+| Format | Extension | Parsing |
+|--------|-----------|---------|
+| CSV | `.csv` | Papa Parse |
+| Excel | `.xlsx`, `.xls` | SheetJS |
+| JSON | `.json` | Natif |
+| SQL | connexion directe | Turso / PostgreSQL |
+
+## 6. Consommateurs
+
+- **AG001 Pilot** — via `OP-006 Text to SQL`
+- **AG002 Sailor** — via `OP-004 OCR` + `OP-005 Doc Understanding`
+- **AG003 Matchmaker** — via `OP-008 Embedding`

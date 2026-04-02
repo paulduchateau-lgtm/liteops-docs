@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* ── T3 Docs — Teenage Engineering / Spec Sheet ────────────────────────── */
+/* Fonts loaded via <link> in layout.tsx — no @import url() here (CSS order) */
+
+@theme inline {
+  /* ── Fumadocs semantic colors ────────────────────────────────────────── */
+  --color-background: #FFFFFF;
+  --color-foreground: #1C1C1A;
+  --color-fd-background: #FFFFFF;
+  --color-fd-foreground: #1C1C1A;
+  --color-fd-muted: #F2F3ED;
+  --color-fd-muted-foreground: #6B6B60;
+  --color-fd-card: #FFFFFF;
+  --color-fd-border: #D5D1CB;
+  --color-fd-primary: #1C1C1A;
+  --color-fd-primary-foreground: #FFFFFF;
+  --color-fd-accent: #F2F3ED;
+  --color-fd-accent-foreground: #1C1C1A;
+  --color-fd-ring: #1C1C1A;
+
+  /* ── @liteops/ds tokens (inline — avoids @import order issue) ────────── */
+  --color-ink: #1C1C1A;
+  --color-paper: #F0EEEB;
+  --color-warm: #F6F4F0;
+  --color-dark: #1E1D1B;
+  --color-green: #A5D900;
+  --color-green-tint: #F2F3ED;
+  --color-green-20: #EEF5CC;
+  --color-amber: #C4872E;
+  --color-copper: #A0694A;
+  --color-fog: #E9E6E1;
+  --color-rule: #D5D1CB;
+  --color-chrome: #B8B5AE;
+  --color-chrome-l: #CDC9C2;
+  --color-chrome-d: #9A968E;
+  --color-steel: #7D7A73;
+  --color-sage: #908E85;
+  --color-moss: #6B6B60;
+  --color-alert: #B85A40;
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* ── R01 : zero border-radius T3 ────────────────────────────────────── */
+  --radius-lg: 0px;
+  --radius-md: 0px;
+  --radius-sm: 0px;
+}
+
+/* ── R01 : force zero border-radius on everything ────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+  }
+}
+
+/* ── R02 : body defaults ─────────────────────────────────────────────── */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--color-ink);
+    background: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ── R05 : dot-grid pattern T3 ───────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle, #D5D1CB 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+  opacity: 0.5;
+}
+
+/* ── Fumadocs overrides for T3 ───────────────────────────────────────── */
+
+:root {
+  --fd-sidebar-width: 260px;
+}
+
+/* Table headers — green-tint background */
+.prose th,
+[data-mdx] th {
+  background: var(--color-green-tint);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* Code blocks — dark surface */
+.prose pre,
+[data-mdx] pre {
+  background: var(--color-dark) !important;
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Inline code */
+.prose code:not(pre code),
+[data-mdx] code:not(pre code) {
+  background: var(--color-green-tint);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 2px 6px;
+  font-weight: 400;
+}
+
+/* Links — ink accent, not blue */
+.prose a,
+[data-mdx] a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-rule);
+  text-underline-offset: 3px;
+}
+.prose a:hover,
+[data-mdx] a:hover {
+  text-decoration-color: var(--color-ink);
+}
+
+/* Headings — DM Sans medium 500, never bold */
+.prose h1, .prose h2, .prose h3, .prose h4,
+[data-mdx] h1, [data-mdx] h2, [data-mdx] h3, [data-mdx] h4 {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-green-tint);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-chrome);
+}

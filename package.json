@@ -10,7 +10,6 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "@liteops/ds": "*",
     "@types/mdx": "^2.0.13",
     "fumadocs-core": "^16.7.9",
     "fumadocs-mdx": "^14.2.11",

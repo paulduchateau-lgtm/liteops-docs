@@ -1,0 +1,85 @@
+name: Deploy
+on:
+  push:
+
+env:
+  SCW_CLI_VERSION: v2.53.0
+  GIT_SHA: ${{ github.sha }}
+
+jobs:
+  frontend-build:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install dependencies
+        run: npm i
+      - name: Build webapp
+        run: npm run build
+      - name: Zip output
+        run: (cd out && zip -r ../dist.zip .)
+      - uses: actions/upload-artifact@v7
+        name: Upload frontend build artifact
+        id: frontend-build-upload
+        with:
+          name: frontend-build-artifact
+          path: dist.zip
+          if-no-files-found: 'error'
+
+  frontend-deploy:
+    name: Deploy frontend
+    needs: frontend-build
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+    timeout-minutes: 10
+    steps:
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: '${{ github.token }}'
+          environment-url: https://lite-ops.com
+          environment: production
+
+      - uses: actions/download-artifact@v8
+        name: Download frontend build artifact
+        with:
+          artifact-ids: ${{ steps.frontend-build-upload.outputs.artifact-id }}
+          path: dist.zip
+
+      - name: Copy files into remote repository
+        uses: appleboy/scp-action@master
+        with:
+          host: lite-ops.com
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: dist.zip
+          target: ~/docs.lite-ops.com/
+
+      - name: Unzip distant files
+        uses: appleboy/ssh-action@v1
+        with:
+          host: lite-ops.com
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: cd ~/docs.lite-ops.com && unzip -o dist.zip/dist.zip
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'success'
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: ${{ steps.deployment.outputs.environment_url }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: 'failure'

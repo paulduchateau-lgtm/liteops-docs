@@ -1,0 +1,10 @@
+{
+  "title": "Documentation Technique",
+  "icon": "Cpu",
+  "defaultOpen": true,
+  "pages": [
+    "index",
+    "operators",
+    "agents"
+  ]
+}

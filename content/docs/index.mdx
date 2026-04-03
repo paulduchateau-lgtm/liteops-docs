@@ -1,6 +1,6 @@
 ---
 title: Documentation LiteOps
-description: Spécifications techniques des opérateurs, agents et systèmes LiteOps.
+description: Base Documentaire unifiée LiteOps.
 ---
 
 ## Bienvenue
@@ -9,9 +9,9 @@ LiteOps construit des **systèmes intelligents d'opérations** composés d'opér
 
 Cette documentation couvre :
 
-- **Opérateurs** (`OP-XXX`) — Briques fonctionnelles atomiques
-- **Agents** (`AG00X`) — Compositions d'opérateurs résolvant un problème métier
-- **Systèmes** (`SYS-XX`) — Orchestrations de plusieurs agents
+- **La documentation** (`TECHNIQUE`) — Briques techniques d'opérateurs, d'agents et de systèmes
+- **Les présentations de nos produits** (`PRODUITS`) — Agents et Systèmes intégrés et en cours de développement
+- **Le programme** (`PARTENAIRES`) — L'environnement permettant de la déploiement de nos solutions
 
 ## Architecture
 
@@ -39,26 +39,4 @@ Agents (AG00X)
 Systèmes (SYS-XX)
     │
     └── SYS-01 — Orchestration multi-agents
-```
 
-## Format d'échange : DataPacket
-
-Tout opérateur communique via un **DataPacket** standardisé :
-
-| Champ | Type | Description |
-|-------|------|-------------|
-| `id` | `string` | Identifiant unique |
-| `version` | `string` | Version du packet |
-| `quality_flag` | `PASS \| WARNING \| LOW` | Indicateur qualité |
-| `quality_score` | `number` | Score 0–100 |
-| `schema` | `object` | Schéma des données |
-| `payload` | `unknown` | Données transportées |
-| `lineage` | `array` | Traçabilité source + timestamp |
-
-## Quality Flags
-
-| Flag | Score | Signification |
-|------|-------|---------------|
-| `PASS` | 80+ | Données exploitables directement |
-| `WARNING` | 50–79 | Données utilisables avec précaution |
-| `LOW` | 0–49 | Données insuffisantes, action requise |

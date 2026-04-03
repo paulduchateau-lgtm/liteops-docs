@@ -1,0 +1,43 @@
+---
+title: Règles contractuelles
+description: Non-concurrence, séparation des rôles, tracking et attribution.
+icon: FileText
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+
+# Règles contractuelles
+
+<Accordions>
+  <Accordion title="Non-concurrence" defaultOpen>
+    Lite Ops ne fait pas d'audit, de cadrage ni de conseil métier — c'est le domaine exclusif des partenaires. En revanche, Lite Ops réalise les développements custom spécifiés par le partenaire.
+
+    La frontière est claire : **le partenaire pense, Lite Ops construit.**
+
+    Tout projet de services interne à Lite Ops fera l'objet d'une communication préalable au réseau partenaire.
+  </Accordion>
+
+  <Accordion title="Séparation des rôles">
+    | Lite Ops | Partenaire |
+    |---|---|
+    | Licences | Audit |
+    | Maintenance | Cadrage |
+    | Évolution produit | Expertise métier |
+    | Dev custom | Spécification |
+
+    Pas de chevauchement. Les zones grises sont arbitrées conjointement.
+  </Accordion>
+
+  <Accordion title="Tracking des opportunités">
+    CRM partagé ou déclaratif obligatoire. Validation systématique des leads et attribution transparente.
+
+    Reporting mensuel accessible à chaque partenaire sur son périmètre.
+  </Accordion>
+
+  <Accordion title="Attribution client">
+    <Callout title="First registered, first served" type="warn">
+    Règle simple et non discutable. Le premier partenaire à enregistrer le lead en est propriétaire. En cas de litige, la date d'enregistrement CRM fait foi.
+    </Callout>
+  </Accordion>
+</Accordions>

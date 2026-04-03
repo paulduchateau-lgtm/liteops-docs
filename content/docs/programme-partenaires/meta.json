@@ -1,0 +1,18 @@
+{
+  "title": "Programme Partenaires",
+  "description": "Le partenaire pense, Lite Ops construit.",
+  "icon": "Handshake",
+  "pages": [
+    "index",
+    "---Modèle---",
+    "principe",
+    "creation-de-valeur",
+    "---Commercial---",
+    "droits-commerciaux",
+    "partner-tiers",
+    "---Cadre---",
+    "regles-contractuelles",
+    "exemple",
+    "synthese"
+  ]
+}

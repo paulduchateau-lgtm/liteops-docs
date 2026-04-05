@@ -5,10 +5,6 @@ const config = {
   output: 'export',
   trailingSlash: true,
   reactStrictMode: true,
-  output: 'export',
-  images: {
-    unoptimized: true,      
-  },
 };
 
 const withMDX = createMDX();
